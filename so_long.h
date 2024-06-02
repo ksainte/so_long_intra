@@ -6,7 +6,7 @@
 /*   By: ksainte <ksainte@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/21 13:37:29 by ksainte           #+#    #+#             */
-/*   Updated: 2024/06/02 20:46:56 by ksainte          ###   ########.fr       */
+/*   Updated: 2024/06/02 21:48:04 by ksainte          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,8 +91,6 @@ typedef struct	s_program {
 	t_image		sprite;
 	t_map		*map;
 	t_vector	sprite_position;
-	t_vector	enmy_sprite_position;;
-	t_vector	img_size;
 	size_t		lenght;
 	size_t		height;
 }				t_program;
@@ -100,28 +98,25 @@ typedef struct	s_program {
 
 t_window	ft_new_window(void *mlx, int widht, int height, char *name);
 t_image		ft_new_sprite(void *mlx, char *path);
-void		open_wallimgs_up(t_program *game);
-void		open_wallimgs_down(t_program *game);
 char		*ft_strtrim_end(char const *s1, char const *set);
 int 		ft_is_rectangular(t_map *map);
 int 		ft_has_walls(t_map *map);
 int 		char_check(char c, t_map *map);
 int 		ft_char_is_legit(t_map *map);
-int 		ft_n_in_line(char *str);
 void		free_table(char **buffer);
 void		ft_error(void);
-void ft_paste_walls(t_program *program, t_map *map);
-void ft_paste_cltbs(t_program *program, t_map *map);
-void ft_paste_exit(t_program *program, t_map *map);
-void ft_paste_start(t_program *program, t_map *map);
-void ft_paste_bg(t_program *program, t_map *map);
-void ft_row_number(t_map *map, char *path);
-void ft_fill_tab(t_map *map, char *path);
-void ft_init_tmp(t_map *map);
-void ft_valid_map(t_map *map);
-void	exit_err(int errnum);
-void	ft_printf_table(char **tab);
-
+void 		ft_paste_walls(t_program *program, t_map *map);
+void 		ft_paste_cltbs(t_program *program, t_map *map);
+void 		ft_paste_exit(t_program *program, t_map *map);
+void 		ft_paste_start(t_program *program, t_map *map);
+void 		ft_paste_bg(t_program *program, t_map *map);
+void 		ft_row_number(t_map *map, char *path);
+void 		ft_fill_tab(t_map *map, char *path);
+void 		ft_init_tmp(t_map *map);
+void 		ft_valid_map(t_map *map);
+void		exit_err(int errnum);
+void		ft_print_table(char **tab);
+int			ft_close(t_program *program);
 int			ft_input(int key, void *program);
-int			ft_update (void *param);
+
 #endif

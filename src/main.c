@@ -6,7 +6,7 @@
 /*   By: ksainte <ksainte@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 15:58:19 by ksainte           #+#    #+#             */
-/*   Updated: 2024/06/02 21:02:35 by ksainte          ###   ########.fr       */
+/*   Updated: 2024/06/02 21:38:37 by ksainte          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,7 +126,7 @@ void ft_init_window(t_program *program, t_map *map)
 	ft_paste_cltbs(program, map);
 	ft_paste_exit(program, map);
 }
-static int	ft_close(t_program *program)
+int	ft_close(t_program *program)
 {
 		mlx_clear_window(program->mlx, program->window.reference);
 		free_table(program->map->tab);
@@ -138,9 +138,10 @@ void ft_init_player(t_program *program, t_map *map)
     program->sprite_position.x = map->starting_y * 64;
     program->sprite_position.y = map->starting_x * 64;
 	program->map = map;
+	program->sprite.reference_bgd = mlx_xpm_file_to_image(program->mlx, "Background.xpm", &program->sprite.size.x, &program->sprite.size.y);
     mlx_put_image_to_window(program->mlx, program->window.reference,
         program->sprite.reference, program->sprite_position.x, program->sprite_position.y);
-	printf("Movement counter is -> %d\n", map->movement_counter++);
+	map->movement_counter++;
 	mlx_hook(program->window.reference, 2, 0,*ft_input, program);
 	mlx_hook(program->window.reference, 17, 0, *ft_close, program);
 }

@@ -205,22 +205,6 @@ int ft_char_is_legit(t_map *map)
 			return(0);
 	return(1);
 }
-
-int ft_n_in_line(char *str)
-{
-	
-	int i;
-
-	i = 0;
-	while(str[i])
-	{
-		if(str[i] == '\n')
-			return(1);
-		i++;
-	}
-	return(0);
-	
-}
 void	free_table(char **buffer)
 {
 	int	i;
