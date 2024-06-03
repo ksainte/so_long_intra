@@ -19,5 +19,8 @@
         "vector": "c",
         "libft.h": "c",
         "so_long.h": "c"
-    }
+    },
+    "[c]": {
+            "editor.defaultFormatter": "keyhr.42-c-format"
+        },
 }

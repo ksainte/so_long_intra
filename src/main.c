@@ -6,7 +6,7 @@
 /*   By: ksainte <ksainte@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 15:58:19 by ksainte           #+#    #+#             */
-/*   Updated: 2024/06/03 17:33:24 by ksainte          ###   ########.fr       */
+/*   Updated: 2024/06/03 19:00:44 by ksainte          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,23 +16,24 @@ static void	check_arg(int ac, char *str)
 {
 	if (ac < 2 || str == NULL)
 	{
-		ft_printf("Erreur\nCarte manquante : ./so_long <map>\n");
+		ft_printf("Error\nMissing Map : ./so_long <map>\n");
 		exit(1);
 	}
 	else if (ac > 2)
 	{
-		ft_printf("Erreur\nTrop d'arguments : ./so_long <map>\n");
+		ft_printf("Error\nToo many arguments : ./so_long <map>\n");
 		exit(1);
 	}
 	while (*str != '.' && *str != '\0')
 		str++;
 	if (ft_strncmp(".ber", str, 4) != 0 || ft_strlen(str) != 4)
 	{
-		ft_printf("Erreur\nExtension du fichier carte non valide : <map>.ber");
+		ft_printf("Error\nExtension of the map file not valid : <map>.ber");
 		exit(1);
 	}
 	return ;
 }
+
 void	ft_row_number(t_map *map, char *path)
 {
 	map->fd = open(path, O_RDONLY);
@@ -52,7 +53,10 @@ void	ft_row_number(t_map *map, char *path)
 	}
 	if (map->line != 0)
 		ft_check_left_over(map, path);
+	if (map->line == 0 && map->row == 0)
+		ft_clean_program(map, path);
 }
+
 void	ft_fill_tab(t_map *map, char *path)
 {
 	char	*tmp;
@@ -81,6 +85,7 @@ void	ft_fill_tab(t_map *map, char *path)
 		exit_err(errno);
 	free(path);
 }
+
 void	ft_valid_map(t_map *map)
 {
 	if (!(ft_is_rectangular(map) && ft_has_walls(map) && ft_char_is_legit(map)))
@@ -103,16 +108,17 @@ void	ft_valid_map(t_map *map)
 	}
 	else
 	{
-		ft_printf("\nMap has valid format and valid path:");
+		ft_printf("\nMap has valid format and valid path:\n");
 		ft_print_table(map->tab);
 		free_table(map->tmp);
 	}
 }
+
 int	main(int argc, char **argv)
 {
-	static t_map map;
-	t_program program;
-	char *path;
+	static t_map	map;
+	t_program		program;
+	char			*path;
 
 	check_arg(argc, argv[1]);
 	path = ft_strjoin("./maps/", argv[1]);
@@ -124,6 +130,6 @@ int	main(int argc, char **argv)
 	ft_init_window(&program, &map);
 	ft_init_player(&program, &map);
 	mlx_loop(program.mlx);
-	// free_table(map.tab);
+	free_table(map.tab);
 	system("leaks -q -fullContent $(ps -o pid= -p $PPID)");
 }

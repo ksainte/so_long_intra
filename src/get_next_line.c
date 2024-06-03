@@ -6,13 +6,13 @@
 /*   By: ksainte <ksainte@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 14:46:50 by ksainte           #+#    #+#             */
-/*   Updated: 2024/06/03 16:26:30 by ksainte          ###   ########.fr       */
+/*   Updated: 2024/06/03 17:52:49 by ksainte          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "../so_long.h"
 #include <fcntl.h>
 #include <stdio.h>
-#include "../so_long.h"
 
 char	*get_str(char *test, char *buff, char *str)
 {
@@ -33,7 +33,8 @@ char	*get_str(char *test, char *buff, char *str)
 		str[i] = test[i];
 		str[i + 1] = '\0';
 		ft_memcpy(&buff[0], &test[i + 1], ft_strlen1(test) - i - 1);
-		ft_bzero(&buff[ft_strlen1(test) - i - 1], BUFFER_SIZE - (ft_strlen1(test) - i - 1));
+		ft_bzero(&buff[ft_strlen1(test) - i - 1], BUFFER_SIZE
+			- (ft_strlen1(test) - i - 1));
 	}
 	else
 		str[i] = '\0';

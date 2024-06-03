@@ -6,30 +6,22 @@
 /*   By: ksainte <ksainte@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/03 16:41:53 by ksainte           #+#    #+#             */
-/*   Updated: 2024/06/03 17:09:01 by ksainte          ###   ########.fr       */
+/*   Updated: 2024/06/03 18:45:58 by ksainte          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include"../so_long.h"
+#include "../so_long.h"
 
-void ft_check_left_over(t_map *map, char *path)
+void	ft_check_left_over(t_map *map, char *path)
 {
-	while(map->line != 0)
+	while (map->line != 0)
 	{
 		free(map->line);
 		map->line = get_next_line(map->fd);
 		if (map->line && map->line[0] != '\n')
-		{
-			free(map->line);
-			free(path);
-			map->return_value = close(map->fd);
-    		if(map->return_value == -1)
-				exit_err(errno);
-			ft_error();
-		}
+			ft_clean_program(map, path);
 	}
 }
-
 
 static int	ft_check_char(char c, char const *set)
 {
@@ -62,42 +54,42 @@ char	*ft_strtrim_end(char const *s1, char const *set)
 	if (!str)
 		return (NULL);
 	i = 0;
-    start = 0; 
+	start = 0;
 	while (i < end)
 		str[i++] = s1[start++];
 	str[i] = 0;
 	return (str);
 }
-void ft_init_tmp(t_map *map)
+
+void	ft_init_tmp(t_map *map)
 {
-	size_t x;
-	// char *temp;
+	size_t	x;
 
 	x = 0;
-	map->tmp = ft_calloc(map->row + 1, sizeof(char*));
-	if(!map->tmp)
+	map->tmp = ft_calloc(map->row + 1, sizeof(char *));
+	if (!map->tmp)
 		return ;
-	while(map->tab[x])
+	while (map->tab[x])
 	{
-			map->tmp[x] = ft_strdup(map->tab[x]);
-			// temp = map->tmp[x];
-			// free(temp);
-			x++;
+		map->tmp[x] = ft_strdup(map->tab[x]);
+		x++;
 	}
-	map->tmp[x]= NULL;
+	map->tmp[x] = NULL;
 }
-void ft_has_valid_path(t_map *map, int x, int y)
+
+void	ft_has_valid_path(t_map *map, int x, int y)
 {
-	if(map->tmp[x][y] == 'E')
+	if (map->tmp[x][y] == 'E')
 		map->has_exit = 1;
-	if(map->tmp[x][y] == 'C')
+	if (map->tmp[x][y] == 'C')
 		map->has_all_cltb--;
-	if(map->tmp[x][y] == '0' || map->tmp[x][y] == 'C' || map->tmp[x][y] == 'E' || map->tmp[x][y] == 'P')
+	if (map->tmp[x][y] == '0' || map->tmp[x][y] == 'C' || map->tmp[x][y] == 'E'
+		|| map->tmp[x][y] == 'P')
 	{
 		map->tmp[x][y] = '2';
 		ft_has_valid_path(map, x - 1, y);
 		ft_has_valid_path(map, x + 1, y);
 		ft_has_valid_path(map, x, y - 1);
-		ft_has_valid_path(map, x, y + 1);  
+		ft_has_valid_path(map, x, y + 1);
 	}
 }
