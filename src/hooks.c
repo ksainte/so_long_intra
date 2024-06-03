@@ -6,7 +6,7 @@
 /*   By: ksainte <ksainte@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/03 16:32:57 by ksainte           #+#    #+#             */
-/*   Updated: 2024/06/03 20:05:50 by ksainte          ###   ########.fr       */
+/*   Updated: 2024/06/03 20:12:24 by ksainte          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,9 +26,6 @@ void	ft_update_counter(int x, int y, t_program *program)
 void	ft_game_won(t_program *program)
 {
 	ft_printf("Movement counter is -> %d\n", program->map->movement_counter++);
-	mlx_put_image_to_window(program->mlx, program->win,
-		program->sprite.reference_player, program->sprite_position.x,
-		program->sprite_position.y);
 	mlx_clear_window(program->mlx, program->win);
 	mlx_destroy_image(program->mlx, program->sprite.reference_walls);
 	mlx_destroy_image(program->mlx, program->sprite.reference_bgd);
