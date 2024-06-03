@@ -6,7 +6,7 @@
 /*   By: ksainte <ksainte@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 15:58:19 by ksainte           #+#    #+#             */
-/*   Updated: 2024/06/03 19:00:44 by ksainte          ###   ########.fr       */
+/*   Updated: 2024/06/03 19:06:10 by ksainte          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,5 +131,4 @@ int	main(int argc, char **argv)
 	ft_init_player(&program, &map);
 	mlx_loop(program.mlx);
 	free_table(map.tab);
-	system("leaks -q -fullContent $(ps -o pid= -p $PPID)");
 }

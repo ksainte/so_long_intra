@@ -6,7 +6,7 @@
 /*   By: ksainte <ksainte@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/03 16:41:53 by ksainte           #+#    #+#             */
-/*   Updated: 2024/06/03 18:45:58 by ksainte          ###   ########.fr       */
+/*   Updated: 2024/06/03 19:10:00 by ksainte          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,8 +83,7 @@ void	ft_has_valid_path(t_map *map, int x, int y)
 		map->has_exit = 1;
 	if (map->tmp[x][y] == 'C')
 		map->has_all_cltb--;
-	if (map->tmp[x][y] == '0' || map->tmp[x][y] == 'C' || map->tmp[x][y] == 'E'
-		|| map->tmp[x][y] == 'P')
+	if (map->tmp[x][y] == '0' || map->tmp[x][y] == 'C' || map->tmp[x][y] == 'P')
 	{
 		map->tmp[x][y] = '2';
 		ft_has_valid_path(map, x - 1, y);
