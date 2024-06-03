@@ -15,6 +15,8 @@ void ft_update_counter(int x, int y, t_program *program)
 void ft_game_won(t_program *program)
 {
 		printf("Movement counter is -> %d\n", program->map->movement_counter++);
+		// mlx_destroy_image(program->mlx, program->sprite.reference);
+		// mlx_destroy_image(program->mlx, program->sprite.reference_bgd);
 		mlx_clear_window(program->mlx, program->window.reference);
 		free_table(program->map->tab);
 		exit(1);
@@ -100,6 +102,6 @@ int	ft_input(int key, void *param)
 	else if (key == 53)
 			ft_close(program);
 	mlx_put_image_to_window(program->mlx, program->window.reference,
-		program->sprite.reference, program->sprite_position.x, program->sprite_position.y);
+		program->sprite.reference_player, program->sprite_position.x, program->sprite_position.y);
 	return (0);
 }

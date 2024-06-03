@@ -6,7 +6,7 @@
 /*   By: ksainte <ksainte@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/21 13:37:29 by ksainte           #+#    #+#             */
-/*   Updated: 2024/06/02 21:48:04 by ksainte          ###   ########.fr       */
+/*   Updated: 2024/06/03 13:44:09 by ksainte          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,14 +56,12 @@ typedef struct	s_window {
 
 /* all info needed for an image */
 typedef struct	s_image {
-	void		*reference;
+	void		*reference_player;
 	void		*reference_bgd;
-	void		*reference_enmy;
+	void		*reference_exit;
+	void		*reference_cltbs;
+	void		*reference_walls;
 	t_vector	size;
-	char		*pixels;
-	int			bits_per_pixel;
-	int			line_size;
-	int			endian;
 }				t_image;
 
 typedef struct t_struct
@@ -87,6 +85,7 @@ typedef struct t_struct
 
 typedef struct	s_program {
 	void		*mlx;
+	void		*win;
 	t_window	window;
 	t_image		sprite;
 	t_map		*map;

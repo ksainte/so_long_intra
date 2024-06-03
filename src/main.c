@@ -6,7 +6,7 @@
 /*   By: ksainte <ksainte@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 15:58:19 by ksainte           #+#    #+#             */
-/*   Updated: 2024/06/02 21:38:37 by ksainte          ###   ########.fr       */
+/*   Updated: 2024/06/03 13:44:21 by ksainte          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,12 +38,10 @@ static	void	check_arg(int ac, char *str)
 
 static	void ft_has_valid_path(t_map *map, int x, int y)
 {
-	
 	if(map->tmp[x][y] == 'E')
 		map->has_exit = 1;
 	if(map->tmp[x][y] == 'C')
 		map->has_all_cltb--;
-	//valid paths on the way, if you can reach C and E through it youre good to go
 	if(map->tmp[x][y] == '0' || map->tmp[x][y] == 'C' || map->tmp[x][y] == 'E' || map->tmp[x][y] == 'P')
 	{
 		map->tmp[x][y] = '2';
@@ -57,6 +55,7 @@ static	void ft_has_valid_path(t_map *map, int x, int y)
 void ft_init_tmp(t_map *map)
 {
 	size_t x;
+	// char *temp;
 
 	x = 0;
 	map->tmp = ft_calloc(map->row + 1, sizeof(char*));
@@ -65,6 +64,8 @@ void ft_init_tmp(t_map *map)
 	while(map->tab[x])
 	{
 			map->tmp[x] = ft_strdup(map->tab[x]);
+			// temp = map->tmp[x];
+			// free(temp);
 			x++;
 	}
 	map->tmp[x]= NULL;
@@ -108,6 +109,14 @@ void ft_valid_map(t_map *map)
 		free_table(map->tmp);
 	}
 }
+void ft_init_textures_pointers(t_program *program)
+{
+		program->sprite.reference_bgd = mlx_xpm_file_to_image(program->mlx, "Background.xpm", &program->sprite.size.x, &program->sprite.size.y);
+		program->sprite.reference_walls = mlx_xpm_file_to_image(program->mlx, "block.xpm", &program->sprite.size.x, &program->sprite.size.y);
+		program->sprite.reference_cltbs = mlx_xpm_file_to_image(program->mlx, "enemy_01.xpm", &program->sprite.size.x, &program->sprite.size.y);
+		program->sprite.reference_exit = mlx_xpm_file_to_image(program->mlx, "door_01.xpm", &program->sprite.size.x, &program->sprite.size.y);
+		program->sprite.reference_player = mlx_xpm_file_to_image(program->mlx, "player_01.xpm", &program->sprite.size.x, &program->sprite.size.y);
+}
 
 void ft_init_window(t_program *program, t_map *map)
 {
@@ -120,7 +129,9 @@ void ft_init_window(t_program *program, t_map *map)
 		ft_error();	
 	}
 	program->mlx = mlx_init();
-	program->window = ft_new_window(program->mlx, program->lenght, program->height, "Hello world!");
+	// program->window = ft_new_window(program->mlx, program->lenght, program->height, "Hello so_long!");
+	// window.reference = mlx_new_window(mlx, widht, height, name);
+	ft_init_textures_pointers(program);
 	ft_paste_bg(program, map);
 	ft_paste_walls(program, map);
 	ft_paste_cltbs(program, map);
@@ -129,18 +140,20 @@ void ft_init_window(t_program *program, t_map *map)
 int	ft_close(t_program *program)
 {
 		mlx_clear_window(program->mlx, program->window.reference);
+		// mlx_destroy_image(program->mlx, program->sprite.reference);
+		// mlx_destroy_image(program->mlx, program->sprite.reference_bgd);
 		free_table(program->map->tab);
+		system("leaks -q -fullContent $(ps -o pid= -p $PPID)");
 		exit(1);
 }
 void ft_init_player(t_program *program, t_map *map)
 {
-	program->sprite = ft_new_sprite(program->mlx, "player_01.xpm");
+	// program->sprite = ft_new_sprite(program->mlx, "player_01.xpm");
     program->sprite_position.x = map->starting_y * 64;
     program->sprite_position.y = map->starting_x * 64;
+	mlx_put_image_to_window(program->mlx, program->window.reference,
+        program->sprite.reference_player, program->sprite_position.x, program->sprite_position.y);
 	program->map = map;
-	program->sprite.reference_bgd = mlx_xpm_file_to_image(program->mlx, "Background.xpm", &program->sprite.size.x, &program->sprite.size.y);
-    mlx_put_image_to_window(program->mlx, program->window.reference,
-        program->sprite.reference, program->sprite_position.x, program->sprite_position.y);
 	map->movement_counter++;
 	mlx_hook(program->window.reference, 2, 0,*ft_input, program);
 	mlx_hook(program->window.reference, 17, 0, *ft_close, program);
@@ -162,6 +175,6 @@ int	main(int argc, char **argv)
 	ft_init_window(&program, &map);
 	ft_init_player(&program, &map);
 	mlx_loop(program.mlx);
-	free_table(map.tab);
+	// free_table(map.tab);
 	system("leaks -q -fullContent $(ps -o pid= -p $PPID)");
 }
