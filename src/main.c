@@ -6,10 +6,9 @@
 /*   By: ksainte <ksainte@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 15:58:19 by ksainte           #+#    #+#             */
-/*   Updated: 2024/06/03 13:54:30 by ksainte          ###   ########.fr       */
+/*   Updated: 2024/06/03 17:10:21 by ksainte          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 
 #include"../so_long.h"
 
@@ -34,54 +33,54 @@ static	void	check_arg(int ac, char *str)
 	}
 	return ;
 }
-
-
-static	void ft_has_valid_path(t_map *map, int x, int y)
-{
-	if(map->tmp[x][y] == 'E')
-		map->has_exit = 1;
-	if(map->tmp[x][y] == 'C')
-		map->has_all_cltb--;
-	if(map->tmp[x][y] == '0' || map->tmp[x][y] == 'C' || map->tmp[x][y] == 'E' || map->tmp[x][y] == 'P')
-	{
-		map->tmp[x][y] = '2';
-		ft_has_valid_path(map, x - 1, y);
-		ft_has_valid_path(map, x + 1, y);
-		ft_has_valid_path(map, x, y - 1);
-		ft_has_valid_path(map, x, y + 1);  
-	}
-}
-
-void ft_init_tmp(t_map *map)
-{
-	size_t x;
-	// char *temp;
-
-	x = 0;
-	map->tmp = ft_calloc(map->row + 1, sizeof(char*));
-	if(!map->tmp)
+void ft_row_number(t_map *map, char *path)
+{	
+    map->fd = open(path , O_RDONLY);
+	if (map->fd == -1)
+		exit_err(errno);
+	map->line = (char *)malloc(sizeof(char*));
+	if(!map->line)
 		return ;
-	while(map->tab[x])
-	{
-			map->tmp[x] = ft_strdup(map->tab[x]);
-			// temp = map->tmp[x];
-			// free(temp);
-			x++;
-	}
-	map->tmp[x]= NULL;
+    while (map->line != NULL)
+    {
+		if (map->line)
+			free(map->line);
+        map->line = get_next_line(map->fd);
+		if (map->line == 0 || *map->line == '\n')
+			break;
+        map->row++;
+    }
+	if(map->line != 0)
+		ft_check_left_over(map, path);
 }
-void	ft_print_table(char **tab)
+void ft_fill_tab(t_map *map, char *path)
 {
-	size_t	i;
+    char *tmp;
+	char *tmp1;
+    size_t   i;
 
-	i = 0;
-	while (tab[i])
+    i = 0;
+	map->tab = calloc(map->row + 1, sizeof(char*));
+	if(!map->tab)
+		return ;
+	map->fd = open(path, O_RDONLY);
+	while (i < map->row)
 	{
-		printf("%s\n", tab[i]);
+		map->tab[i] = get_next_line(map->fd);
+		tmp = map->tab[i];
+		map->tab[i] = ft_strtrim(map->tab[i], "\n");
+		tmp1 = map->tab[i];
+		map->tab[i] = ft_strtrim_end(map->tab[i], " ");
+		free(tmp);
+		free(tmp1);
 		i++;
 	}
+	map->tab[i] = NULL;
+	map->return_value = close(map->fd);
+	if(map->return_value == -1)
+		exit_err(errno);
+	free(path);
 }
-
 void ft_valid_map(t_map *map)
 {
 	if (!(ft_is_rectangular(map) && ft_has_walls(map) && ft_char_is_legit(map)))
@@ -104,61 +103,11 @@ void ft_valid_map(t_map *map)
 	}
 	else
 	{
-		printf("Map has valid format and valid path, launching the game...\n");
+		printf("\nMap has valid format and valid path, launching the game...\n");
 		ft_print_table(map->tab);
 		free_table(map->tmp);
 	}
 }
-void ft_init_textures_pointers(t_program *program)
-{
-		program->sprite.reference_bgd = mlx_xpm_file_to_image(program->mlx, "Background.xpm", &program->sprite.size.x, &program->sprite.size.y);
-		program->sprite.reference_walls = mlx_xpm_file_to_image(program->mlx, "block.xpm", &program->sprite.size.x, &program->sprite.size.y);
-		program->sprite.reference_cltbs = mlx_xpm_file_to_image(program->mlx, "enemy_01.xpm", &program->sprite.size.x, &program->sprite.size.y);
-		program->sprite.reference_exit = mlx_xpm_file_to_image(program->mlx, "door_01.xpm", &program->sprite.size.x, &program->sprite.size.y);
-		program->sprite.reference_player = mlx_xpm_file_to_image(program->mlx, "player_01.xpm", &program->sprite.size.x, &program->sprite.size.y);
-		program->textures[0] = mlx_xpm_file_to_image(program->mlx, "player_01.xpm", &program->sprite.size.x, &program->sprite.size.y);
-}
-
-void ft_init_window(t_program *program, t_map *map)
-{
-	program->lenght = map->row_size * 64;
-	program->height = map->row * 64;
-	if(program->lenght > 2560 || program->height > 1440)
-	{	
-		printf("Map size is exceeding screen size, aborting the game launch...\n");
-		free_table(map->tab);
-		ft_error();	
-	}
-	program->mlx = mlx_init();
-	program->win = mlx_new_window(program->mlx, program->lenght, program->height, "Hello so_long!");
-	ft_init_textures_pointers(program);
-	ft_paste_bg(program, map);
-	ft_paste_walls(program, map);
-	ft_paste_cltbs(program, map);
-	ft_paste_exit(program, map);
-}
-int	ft_close(t_program *program)
-{
-		mlx_clear_window(program->mlx, program->win);
-		// mlx_destroy_image(program->mlx, program->sprite.reference);
-		// mlx_destroy_image(program->mlx, program->sprite.reference_bgd);
-		free_table(program->map->tab);
-		system("leaks -q -fullContent $(ps -o pid= -p $PPID)");
-		exit(1);
-}
-void ft_init_player(t_program *program, t_map *map)
-{
-	// program->sprite = ft_new_sprite(program->mlx, "player_01.xpm");
-    program->sprite_position.x = map->starting_y * 64;
-    program->sprite_position.y = map->starting_x * 64;
-	mlx_put_image_to_window(program->mlx, program->win,
-        program->textures[0], program->sprite_position.x, program->sprite_position.y);
-	program->map = map;
-	map->movement_counter++;
-	mlx_hook(program->win, 2, 0,*ft_input, program);
-	mlx_hook(program->win, 17, 0, *ft_close, program);
-}
-
 int	main(int argc, char **argv)
 {
     static t_map   map;

@@ -6,13 +6,13 @@
 #    By: ksainte <ksainte@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/05/21 13:23:41 by ksainte           #+#    #+#              #
-#    Updated: 2024/06/03 13:53:56 by ksainte          ###   ########.fr        #
+#    Updated: 2024/06/03 16:53:30 by ksainte          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 CC = gcc -g3
 CFLAGS = -Wall -Wextra -Werror
-SRCS = src/main.c src/hooks.c src/get_next_line.c src/get_next_line_utils.c src/utils.c src/paste.c
+SRCS = src/main.c src/hooks.c src/get_next_line.c src/get_next_line_utils.c src/utils.c src/paste.c src/init_game.c src/directions.c src/annex.c src/valid_map_utils.c
 LIBFT_PATH = Libft
 MLX_PATH = mlx
 LIBFT_ARCHIVE = $(LIBFT_PATH)/libft.a

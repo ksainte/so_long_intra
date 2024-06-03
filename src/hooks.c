@@ -1,5 +1,16 @@
-#include "../so_long.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   hooks.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ksainte <ksainte@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/06/03 16:32:57 by ksainte           #+#    #+#             */
+/*   Updated: 2024/06/03 16:33:00 by ksainte          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
+#include "../so_long.h"
 
 void ft_update_counter(int x, int y, t_program *program)
 {
@@ -14,11 +25,15 @@ void ft_update_counter(int x, int y, t_program *program)
 
 void ft_game_won(t_program *program)
 {
-		printf("Movement counter is -> %d\n", program->map->movement_counter++);
-		// mlx_destroy_image(program->mlx, program->sprite.reference);
-		// mlx_destroy_image(program->mlx, program->sprite.reference_bgd);
+		ft_printf("Movement counter is -> %d\n", program->map->movement_counter++);
 		mlx_clear_window(program->mlx, program->win);
+		mlx_destroy_image(program->mlx, program->sprite.reference_walls);
+		mlx_destroy_image(program->mlx, program->sprite.reference_bgd);
+		mlx_destroy_image(program->mlx, program->sprite.reference_cltbs);
+		mlx_destroy_image(program->mlx, program->sprite.reference_exit);
+		mlx_destroy_image(program->mlx, program->sprite.reference_player);
 		free_table(program->map->tab);
+		system("leaks -q -fullContent $(ps -o pid= -p $PPID)");
 		exit(1);
 }
 
@@ -27,58 +42,25 @@ int	ft_exit(int key, int x, int y, t_program *program)
 
 	if (key == 124 && program->map->tab[x][y + 1] == 'E' && program->map->has_exit == 0)
 		{
-			program->sprite_position.x += program->sprite.size.x;
+			program->sprite_position.x += 64;
 			ft_game_won(program);
 		}
 	else if (key == 123 && program->map->tab[x][y - 1] == 'E' && program->map->has_exit == 0)
 		{
-			program->sprite_position.x -= program->sprite.size.x;
+			program->sprite_position.x -= 64;
 			ft_game_won(program);
 		}
 	else if (key == 125 && program->map->tab[x + 1][y] == 'E' && program->map->has_exit == 0)
 		{
-			program->sprite_position.y += program->sprite.size.y;
+			program->sprite_position.y += 64;
 			ft_game_won(program);
 		}	
 	else if (key == 126 && program->map->tab[x - 1][y] == 'E' && program->map->has_exit == 0)
 		{
-			program->sprite_position.y -= program->sprite.size.y;
+			program->sprite_position.y -= 64;
 			ft_game_won(program);
 		}
 	return (0);
-}
-void ft_right(size_t x, size_t y, t_program *program)
-{
-	program->sprite_position.x += program->sprite.size.x;
-	ft_update_counter(x, y, program);
-	mlx_put_image_to_window(program->mlx, program->win,
-			program->sprite.reference_bgd, program->sprite_position.x, program->sprite_position.y);
-	printf("Movement counter is -> %d\n", program->map->movement_counter++);
-}
-
-void ft_left(size_t x, size_t y, t_program *program)
-{
-			program->sprite_position.x -= program->sprite.size.x;
-			ft_update_counter(x, y, program);
-			mlx_put_image_to_window(program->mlx, program->win,
-		program->sprite.reference_bgd, program->sprite_position.x, program->sprite_position.y);
-		printf("Movement counter is -> %d\n", program->map->movement_counter++);
-}
-void ft_down(size_t x, size_t y, t_program *program)
-{
-			program->sprite_position.y += program->sprite.size.y;
-			ft_update_counter(x, y, program);
-			mlx_put_image_to_window(program->mlx, program->win,
-		program->sprite.reference_bgd, program->sprite_position.x, program->sprite_position.y);
-		printf("Movement counter is -> %d\n", program->map->movement_counter++);
-}
-void ft_up(size_t x, size_t y, t_program *program)
-{
-			program->sprite_position.y -= program->sprite.size.y;
-			ft_update_counter(x, y, program);
-			mlx_put_image_to_window(program->mlx, program->win,
-		program->sprite.reference_bgd, program->sprite_position.x, program->sprite_position.y);
-		printf("Movement counter is -> %d\n", program->map->movement_counter++);
 }
 int	ft_input(int key, void *param)
 {
@@ -88,7 +70,6 @@ int	ft_input(int key, void *param)
 
 	mlx_put_image_to_window(program->mlx, program->win,
 		program->sprite.reference_bgd, program->sprite_position.x, program->sprite_position.y);
-	
 	y = program->sprite_position.x / 64;
 	x = program->sprite_position.y / 64;
 	if (key == 124 && program->map->tab[x][y + 1] != '1' && !ft_exit(key, x, y, program) && program->map->tab[x][y + 1] != 'E') //go to right
@@ -102,6 +83,6 @@ int	ft_input(int key, void *param)
 	else if (key == 53)
 			ft_close(program);
 	mlx_put_image_to_window(program->mlx, program->win,
-		program->textures[0], program->sprite_position.x, program->sprite_position.y);
+		program->sprite.reference_player, program->sprite_position.x, program->sprite_position.y);
 	return (0);
 }
