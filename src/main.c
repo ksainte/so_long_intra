@@ -6,7 +6,7 @@
 /*   By: ksainte <ksainte@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 15:58:19 by ksainte           #+#    #+#             */
-/*   Updated: 2024/06/03 13:44:21 by ksainte          ###   ########.fr       */
+/*   Updated: 2024/06/03 13:54:30 by ksainte          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,6 +116,7 @@ void ft_init_textures_pointers(t_program *program)
 		program->sprite.reference_cltbs = mlx_xpm_file_to_image(program->mlx, "enemy_01.xpm", &program->sprite.size.x, &program->sprite.size.y);
 		program->sprite.reference_exit = mlx_xpm_file_to_image(program->mlx, "door_01.xpm", &program->sprite.size.x, &program->sprite.size.y);
 		program->sprite.reference_player = mlx_xpm_file_to_image(program->mlx, "player_01.xpm", &program->sprite.size.x, &program->sprite.size.y);
+		program->textures[0] = mlx_xpm_file_to_image(program->mlx, "player_01.xpm", &program->sprite.size.x, &program->sprite.size.y);
 }
 
 void ft_init_window(t_program *program, t_map *map)
@@ -129,8 +130,7 @@ void ft_init_window(t_program *program, t_map *map)
 		ft_error();	
 	}
 	program->mlx = mlx_init();
-	// program->window = ft_new_window(program->mlx, program->lenght, program->height, "Hello so_long!");
-	// window.reference = mlx_new_window(mlx, widht, height, name);
+	program->win = mlx_new_window(program->mlx, program->lenght, program->height, "Hello so_long!");
 	ft_init_textures_pointers(program);
 	ft_paste_bg(program, map);
 	ft_paste_walls(program, map);
@@ -139,7 +139,7 @@ void ft_init_window(t_program *program, t_map *map)
 }
 int	ft_close(t_program *program)
 {
-		mlx_clear_window(program->mlx, program->window.reference);
+		mlx_clear_window(program->mlx, program->win);
 		// mlx_destroy_image(program->mlx, program->sprite.reference);
 		// mlx_destroy_image(program->mlx, program->sprite.reference_bgd);
 		free_table(program->map->tab);
@@ -151,12 +151,12 @@ void ft_init_player(t_program *program, t_map *map)
 	// program->sprite = ft_new_sprite(program->mlx, "player_01.xpm");
     program->sprite_position.x = map->starting_y * 64;
     program->sprite_position.y = map->starting_x * 64;
-	mlx_put_image_to_window(program->mlx, program->window.reference,
-        program->sprite.reference_player, program->sprite_position.x, program->sprite_position.y);
+	mlx_put_image_to_window(program->mlx, program->win,
+        program->textures[0], program->sprite_position.x, program->sprite_position.y);
 	program->map = map;
 	map->movement_counter++;
-	mlx_hook(program->window.reference, 2, 0,*ft_input, program);
-	mlx_hook(program->window.reference, 17, 0, *ft_close, program);
+	mlx_hook(program->win, 2, 0,*ft_input, program);
+	mlx_hook(program->win, 17, 0, *ft_close, program);
 }
 
 int	main(int argc, char **argv)

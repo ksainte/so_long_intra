@@ -6,7 +6,7 @@
 /*   By: ksainte <ksainte@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/21 13:37:29 by ksainte           #+#    #+#             */
-/*   Updated: 2024/06/03 13:44:09 by ksainte          ###   ########.fr       */
+/*   Updated: 2024/06/03 13:50:46 by ksainte          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,6 +86,7 @@ typedef struct t_struct
 typedef struct	s_program {
 	void		*mlx;
 	void		*win;
+	void		*textures[1];
 	t_window	window;
 	t_image		sprite;
 	t_map		*map;

@@ -17,7 +17,7 @@ void ft_game_won(t_program *program)
 		printf("Movement counter is -> %d\n", program->map->movement_counter++);
 		// mlx_destroy_image(program->mlx, program->sprite.reference);
 		// mlx_destroy_image(program->mlx, program->sprite.reference_bgd);
-		mlx_clear_window(program->mlx, program->window.reference);
+		mlx_clear_window(program->mlx, program->win);
 		free_table(program->map->tab);
 		exit(1);
 }
@@ -51,7 +51,7 @@ void ft_right(size_t x, size_t y, t_program *program)
 {
 	program->sprite_position.x += program->sprite.size.x;
 	ft_update_counter(x, y, program);
-	mlx_put_image_to_window(program->mlx, program->window.reference,
+	mlx_put_image_to_window(program->mlx, program->win,
 			program->sprite.reference_bgd, program->sprite_position.x, program->sprite_position.y);
 	printf("Movement counter is -> %d\n", program->map->movement_counter++);
 }
@@ -60,7 +60,7 @@ void ft_left(size_t x, size_t y, t_program *program)
 {
 			program->sprite_position.x -= program->sprite.size.x;
 			ft_update_counter(x, y, program);
-			mlx_put_image_to_window(program->mlx, program->window.reference,
+			mlx_put_image_to_window(program->mlx, program->win,
 		program->sprite.reference_bgd, program->sprite_position.x, program->sprite_position.y);
 		printf("Movement counter is -> %d\n", program->map->movement_counter++);
 }
@@ -68,7 +68,7 @@ void ft_down(size_t x, size_t y, t_program *program)
 {
 			program->sprite_position.y += program->sprite.size.y;
 			ft_update_counter(x, y, program);
-			mlx_put_image_to_window(program->mlx, program->window.reference,
+			mlx_put_image_to_window(program->mlx, program->win,
 		program->sprite.reference_bgd, program->sprite_position.x, program->sprite_position.y);
 		printf("Movement counter is -> %d\n", program->map->movement_counter++);
 }
@@ -76,7 +76,7 @@ void ft_up(size_t x, size_t y, t_program *program)
 {
 			program->sprite_position.y -= program->sprite.size.y;
 			ft_update_counter(x, y, program);
-			mlx_put_image_to_window(program->mlx, program->window.reference,
+			mlx_put_image_to_window(program->mlx, program->win,
 		program->sprite.reference_bgd, program->sprite_position.x, program->sprite_position.y);
 		printf("Movement counter is -> %d\n", program->map->movement_counter++);
 }
@@ -86,7 +86,7 @@ int	ft_input(int key, void *param)
 	size_t x;
     size_t y;
 
-	mlx_put_image_to_window(program->mlx, program->window.reference,
+	mlx_put_image_to_window(program->mlx, program->win,
 		program->sprite.reference_bgd, program->sprite_position.x, program->sprite_position.y);
 	
 	y = program->sprite_position.x / 64;
@@ -101,7 +101,7 @@ int	ft_input(int key, void *param)
 			ft_up(x, y, program);
 	else if (key == 53)
 			ft_close(program);
-	mlx_put_image_to_window(program->mlx, program->window.reference,
-		program->sprite.reference_player, program->sprite_position.x, program->sprite_position.y);
+	mlx_put_image_to_window(program->mlx, program->win,
+		program->textures[0], program->sprite_position.x, program->sprite_position.y);
 	return (0);
 }
