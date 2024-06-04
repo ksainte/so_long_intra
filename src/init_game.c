@@ -6,7 +6,7 @@
 /*   By: ksainte <ksainte@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/03 16:27:33 by ksainte           #+#    #+#             */
-/*   Updated: 2024/06/03 18:00:44 by ksainte          ###   ########.fr       */
+/*   Updated: 2024/06/04 10:19:25 by ksainte          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	ft_init_textures_pointers(t_program *program)
 	program->sprite.reference_walls = mlx_xpm_file_to_image(program->mlx,
 			"./textures/block.xpm", &program->isize[0], &program->isize[1]);
 	program->sprite.reference_cltbs = mlx_xpm_file_to_image(program->mlx,
-			"./textures/enemy_01.xpm", &program->isize[0], &program->isize[1]);
+			"./textures/cltbs_01.xpm", &program->isize[0], &program->isize[1]);
 	program->sprite.reference_exit = mlx_xpm_file_to_image(program->mlx,
 			"./textures/door_01.xpm", &program->isize[0], &program->isize[1]);
 	program->sprite.reference_player = mlx_xpm_file_to_image(program->mlx,

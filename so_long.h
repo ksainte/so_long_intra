@@ -6,7 +6,7 @@
 /*   By: ksainte <ksainte@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/21 13:37:29 by ksainte           #+#    #+#             */
-/*   Updated: 2024/06/03 18:47:41 by ksainte          ###   ########.fr       */
+/*   Updated: 2024/06/04 10:28:59 by ksainte          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,11 @@
 # define SO_LONG_H
 
 # include "./Libft/libft.h"
-# include "./get_next_line.h"
+# include "./Libft/get_next_line.h"
 # include <errno.h>
 # include <fcntl.h>
 # include <mlx.h>
 # include <stddef.h>
-# include <stdio.h>
 # include <stdlib.h>
 # include <string.h>
 # include <unistd.h>
